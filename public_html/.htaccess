@@ -1,0 +1,33 @@
+RewriteEngine On
+RewriteRule ^privacy/?$ /en/privacy/ [R=301,L]
+RewriteRule ^terms/?$ /en/terms/ [R=301,L]
+RewriteRule ^cookies/?$ /en/cookies/ [R=301,L]
+RewriteCond %{HTTP:Accept-Language} ^\s*en [NC]
+RewriteRule ^$ /en/ [R=302,L]
+RewriteRule ^$ /ro/ [R=302,L]
+Options -Indexes
+DirectoryIndex index.html
+După ce activezi SSL (Let's Encrypt) în DirectAdmin, scoate # din fața acestor 5 linii:
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^ https://www.les-romania.org%{REQUEST_URI} [L,R=301]
+<IfModule mod_headers.c>
+Header set Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'"
+Header set X-Content-Type-Options "nosniff"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+AddType font/woff2 .woff2
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType text/css "access plus 1 week"
+ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+AuthName "Member Areas"
+AuthGroupFile /dev/null
+AuthType Basic
+AuthUserFile /home/lesroman/domains/les-romania.org/.htpasswd/public_html/.htpasswd
+require valid-user
+ErrorDocument 401 "Unauthorized Access"
