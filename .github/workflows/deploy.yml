@@ -16,4 +16,4 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: domains/les-romania.org/public_html/
+          server-dir: public_html/
